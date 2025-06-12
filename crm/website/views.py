@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
-from . forms import SignUpForm
+from . forms import SignUpForm , AddRecordForm
 from . models import Record
 
 # Create your views here.
@@ -55,6 +55,55 @@ def register_user(request):
     return render(request,'website/register.html',{'form':form})
 
 
+def record_user(request, pk):
+    if request.user.is_authenticated:
+        try:
+            record = Record.objects.get(id=pk)
+            return render(request, 'website/record.html', {'record': record})
+        except Record.DoesNotExist:
+            messages.error(request, 'Record not found.')
+            return redirect('home')
+    else:
+        messages.warning(request, 'You must be logged in to view this page!')
+        return redirect('home')
+
+
+def delete_record_user(request,pk):
+    if request.user.is_authenticated:
+        delete_it = Record.objects.get(id=pk)
+        delete_it.delete()
+        messages.success(request,"Record deleted Sucessesfully !!")
+        return redirect('home')
+    else:
+        messages.error(request,"You msut be logged in to delete the record")
+        return redirect('home')
+
+def add_record_user(request):
+    form = AddRecordForm(request.POST or None)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if form.is_valid():
+                add_record = form.save()
+                messages.success(request,"Added sucessfully")
+                return redirect('home')
+        return render(request,'website/add_record.html',{'form':form})
+    else:
+        messages.error(request,"Must login to add record")
+        return redirect('home')
+    
+def update_record_user(request,pk):
+    if request.user.is_authenticated:
+        cur_record = Record.objects.get(id=pk)
+        form = AddRecordForm(request.POST or None , instance=cur_record)
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Record Updated Sucessfully :)")
+                return redirect('home')
+        return render(request,'website/update_record.html',{'form':form})
+    else:
+        messages.error(request,"Must login to Update")
+        return redirect('home')
 
 
 

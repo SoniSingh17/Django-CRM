@@ -1,0 +1,17 @@
+{% extends "website/base.html" %}
+{% block content %}
+<h2>Customer Record Details</h2>
+
+<p><strong>First Name:</strong> {{ record.first_name }}</p>
+<p><strong>Last Name:</strong> {{ record.last_name }}</p>
+<p><strong>Email:</strong> {{ record.email }}</p>
+<p><strong>Phone:</strong> {{ record.phone }}</p>
+<p><strong>Address:</strong> {{ record.address }}</p>
+<p><strong>City:</strong> {{ record.city }}</p>
+<p><strong>State:</strong> {{ record.state }}</p>
+<p><strong>Pincode:</strong> {{ record.pincode }}</p>
+<p><strong>Created At:</strong> {{ record.created_at }}</p>
+<a href="{% url 'home' %}" class="btn btn-primary">Home</a>
+<a href="{% url 'delete_record' record.id %}" class="btn btn-danger">Delete</a>
+<a href="{% url 'update_record' record.id %}" class="btn btn-secondary">Update</a>
+{% endblock %}

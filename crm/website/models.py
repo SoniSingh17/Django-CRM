@@ -13,5 +13,5 @@ class Record(models.Model):
     pincode = models.CharField(max_length=6)
 
     def __str__(self):
-        return f"First Name : {self.first_name}\n Last Name : {self.last_name}"
+        return f"First Name : {self.first_name} , Last Name : {self.last_name}"
 
